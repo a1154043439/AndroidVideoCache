@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../AndroidVideoCache.iml" filepath="$PROJECT_DIR$/../AndroidVideoCache.iml" />
       <module fileurl="file://$PROJECT_DIR$/../library/library.iml" filepath="$PROJECT_DIR$/../library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../myapplication/myapplication.iml" filepath="$PROJECT_DIR$/../myapplication/myapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample.iml" filepath="$PROJECT_DIR$/sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/../test/test.iml" filepath="$PROJECT_DIR$/../test/test.iml" />
     </modules>
