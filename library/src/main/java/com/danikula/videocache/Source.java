@@ -2,7 +2,11 @@ package com.danikula.videocache;
 
 /**
  * Source for proxy.
- *
+ * 代理的源，代理从这个接口这进货，提供四个方法
+ * 1 指定偏移位置打开
+ * 2 返回文件长度
+ * 3 从source中读取数据到buffer中
+ * 4 关闭释放资源
  * @author Alexey Danilov (danikula@gmail.com).
  */
 public interface Source {

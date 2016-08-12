@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  * {@link DiskUsage} that uses LRU (Least Recently Used) strategy and trims cache size to max size if needed.
- *
+ * 如果totalsize<=maxsize是可以接收的，超过最大尺寸则不再接收
  * @author Alexey Danilov (danikula@gmail.com).
  */
 public class TotalSizeLruDiskUsage extends LruDiskUsage {

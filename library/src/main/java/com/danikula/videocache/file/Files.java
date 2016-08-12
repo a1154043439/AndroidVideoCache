@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Utils for work with files.
- *
+ * 文件的工具类
  * @author Alexey Danilov (danikula@gmail.com).
  */
 class Files {
@@ -29,6 +29,7 @@ class Files {
         }
     }
 
+    //得到排序后的文件列表
     static List<File> getLruListFiles(File directory) {
         List<File> result = new LinkedList<>();
         File[] files = directory.listFiles();
@@ -52,6 +53,7 @@ class Files {
         }
     }
 
+    //强行修改一下最后一个字节，看看修改时间是否有效，可以验证部分机型设置最后修改时间失败的问题
     static void modify(File file) throws IOException {
         long size = file.length();
         if (size == 0) {
@@ -73,6 +75,7 @@ class Files {
         }
     }
 
+    //最近修改的比较器,修改时间越近的值越大
     private static final class LastModifiedComparator implements Comparator<File> {
 
         @Override

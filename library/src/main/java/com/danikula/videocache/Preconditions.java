@@ -1,5 +1,8 @@
 package com.danikula.videocache;
 
+/**
+ * 条件检查类
+ */
 public final class Preconditions {
 
     public static <T> T checkNotNull(T reference) {

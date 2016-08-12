@@ -10,6 +10,7 @@ import java.io.IOException;
  */
 public class Utils {
 
+    //清除缓存的工具类
     public static void cleanDirectory(File file) throws IOException {
         if (!file.exists()) {
             return;
@@ -22,6 +23,7 @@ public class Utils {
         }
     }
 
+    //删除文件或者文件夹的方法
     private static void delete(File file) throws IOException {
         if (file.isFile() && file.exists()) {
             deleteOrThrow(file);

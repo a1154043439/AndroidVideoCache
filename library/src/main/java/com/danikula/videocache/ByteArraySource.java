@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 
 /**
  * Simple memory based {@link Source} implementation.
- *
+ * 简单的内存缓存数据源
  * @author Alexey Danilov (danikula@gmail.com).
  */
 public class ByteArraySource implements Source {

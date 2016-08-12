@@ -2,7 +2,8 @@ package com.danikula.videocache;
 
 /**
  * Stores source's info.
- *
+ * 存储的数据信息
+ * 在HTTP中，MIME类型被定义在Content-Type header中
  * @author Alexey Danilov (danikula@gmail.com).
  */
 public class SourceInfo {

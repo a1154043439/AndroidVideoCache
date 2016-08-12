@@ -36,6 +36,8 @@ import static com.danikula.videocache.ProxyCacheUtils.LOG_TAG;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
+ * http代理缓存的服务器，主要用来提供缓存和播放的服务，客户端由远程访问数据转变为由代理服务器取得数据
+ * 所以代理服务器需要做与远程服务器的交互和播放器的交互
  * Simple lightweight proxy server with file caching support that handles HTTP requests.
  * Typical usage:
  * <pre><code>
@@ -76,12 +78,17 @@ public class HttpProxyCacheServer {
     private HttpProxyCacheServer(Config config) {
         this.config = checkNotNull(config);
         try {
+            //新建一个本地的内部服务器
             InetAddress inetAddress = InetAddress.getByName(PROXY_HOST);
             this.serverSocket = new ServerSocket(0, 8, inetAddress);
             this.port = serverSocket.getLocalPort();
+            //可以将countdownlatch看做线程安全的计数器，保证只有一个线程操作这个计数器，任何调用这个对象上的await()方法都会阻塞，
+            //直到这个计数器的计数值被其他的线程减为0为止
             CountDownLatch startSignal = new CountDownLatch(1);
+            //启动等待连接的线程
             this.waitConnectionThread = new Thread(new WaitRequestsRunnable(startSignal));
             this.waitConnectionThread.start();
+            //冻结线程，等待server启动
             startSignal.await(); // freeze thread, wait for server starts
             Log.i(LOG_TAG, "Proxy cache server started. Ping it...");
             makeSureServerWorks();
@@ -91,6 +98,8 @@ public class HttpProxyCacheServer {
         }
     }
 
+    //确保服务器在工作,去ping 服务器，查看是否Ping的通过,如果未通过,睡眠300ms，再次尝试。第二次尝试的时候失败睡眠时间翻倍
+    //三次尝试如果都失败说明服务器不工作则关闭代理服务器
     private void makeSureServerWorks() {
         int maxPingAttempts = 3;
         int delay = 300;
@@ -114,13 +123,20 @@ public class HttpProxyCacheServer {
         shutdown();
     }
 
+    /**
+     * ping 服务器的方法
+     * @return
+     * @throws ProxyCacheException
+     */
     private boolean pingServer() throws ProxyCacheException {
         String pingUrl = appendToProxyUrl(PING_REQUEST);
         HttpUrlSource source = new HttpUrlSource(pingUrl);
         try {
             byte[] expectedResponse = PING_RESPONSE.getBytes();
+            //打开数据源
             source.open(0);
             byte[] response = new byte[expectedResponse.length];
+            //将http response读到response中
             source.read(response);
             boolean pingOk = Arrays.equals(expectedResponse, response);
             Log.d(LOG_TAG, "Ping response: `" + new String(response) + "`, pinged? " + pingOk);
@@ -133,6 +149,7 @@ public class HttpProxyCacheServer {
         }
     }
 
+    //代理服务器可以ping的通，就使用代理服务器地址，ping不通就使用原来的url
     public String getProxyUrl(String url) {
         if (!pinged) {
             Log.e(LOG_TAG, "Proxy server isn't pinged. Caching doesn't work. If you see this message, please, email me danikula@gmail.com");
@@ -140,12 +157,15 @@ public class HttpProxyCacheServer {
         return pinged ? appendToProxyUrl(url) : url;
     }
 
+    //构造出代理的Url
     private String appendToProxyUrl(String url) {
         return String.format("http://%s:%d/%s", PROXY_HOST, port, ProxyCacheUtils.encode(url));
     }
 
+    //注册缓存的监听器
     public void registerCacheListener(CacheListener cacheListener, String url) {
         checkAllNotNull(cacheListener, url);
+        //加锁，防止多线程问题
         synchronized (clientsLock) {
             try {
                 getClients(url).registerCacheListener(cacheListener);
@@ -189,6 +209,7 @@ public class HttpProxyCacheServer {
         return cacheFile.exists();
     }
 
+    //关闭客户端，等待连接的线程结束关闭server的socket接口
     public void shutdown() {
         Log.i(LOG_TAG, "Shutdown proxy server");
 
@@ -206,6 +227,7 @@ public class HttpProxyCacheServer {
         }
     }
 
+    //关闭所有正在通信的客户端
     private void shutdownClients() {
         synchronized (clientsLock) {
             for (HttpProxyCacheServerClients clients : clientsMap.values()) {
@@ -215,6 +237,9 @@ public class HttpProxyCacheServer {
         }
     }
 
+    /**
+     * 等待客户端建立连接请求
+     */
     private void waitForRequest() {
         try {
             while (!Thread.currentThread().isInterrupted()) {
@@ -227,14 +252,23 @@ public class HttpProxyCacheServer {
         }
     }
 
+    /**
+     * 处理socket，如果是ping请求，返回ping响应
+     * 如果不是ping请求，由clients process Request
+     * @param socket
+     */
     private void processSocket(Socket socket) {
         try {
+            //获取请求数据包
             GetRequest request = GetRequest.read(socket.getInputStream());
             Log.i(LOG_TAG, "Request to cache proxy:" + request);
+            //请求的数据包编码
             String url = ProxyCacheUtils.decode(request.uri);
             if (PING_REQUEST.equals(url)) {
+                //如果是ping请求，返回ping的响应
                 responseToPing(socket);
             } else {
+                //实例化一个cilents,由clients来处理请求
                 HttpProxyCacheServerClients clients = getClients(url);
                 clients.processRequest(request, socket);
             }
@@ -256,10 +290,12 @@ public class HttpProxyCacheServer {
         out.write(PING_RESPONSE.getBytes());
     }
 
+    //根据请求的url获得client
     private HttpProxyCacheServerClients getClients(String url) throws ProxyCacheException {
         synchronized (clientsLock) {
             HttpProxyCacheServerClients clients = clientsMap.get(url);
             if (clients == null) {
+                //将url加入到clients map中
                 clients = new HttpProxyCacheServerClients(url, config);
                 clientsMap.put(url, clients);
             }
@@ -307,6 +343,7 @@ public class HttpProxyCacheServer {
         }
     }
 
+    //关闭socket
     private void closeSocket(Socket socket) {
         try {
             if (!socket.isClosed()) {
@@ -335,7 +372,9 @@ public class HttpProxyCacheServer {
             waitForRequest();
         }
     }
-
+/**
+ * 处理socket的线程
+ * */
     private final class SocketProcessorRunnable implements Runnable {
 
         private final Socket socket;
@@ -350,6 +389,9 @@ public class HttpProxyCacheServer {
         }
     }
 
+    /**
+     * ping server的线程
+     */
     private class PingCallable implements Callable<Boolean> {
 
         @Override
@@ -359,12 +401,16 @@ public class HttpProxyCacheServer {
     }
 
     /**
+     * 构造器类用来构造http proxy cache server
      * Builder for {@link HttpProxyCacheServer}.
      */
     public static final class Builder {
 
+        //最大缓存512MB的内容
         private static final long DEFAULT_MAX_SIZE = 512 * 1024 * 1024;
 
+        //需要制定cache的目录，磁盘缓存的空间大小（当然，用的依然是最近最少未使用的磁盘缓存算法
+        //请求的资源信息，还有文件名称生成器，这里使用了MD5加密
         private File cacheRoot;
         private FileNameGenerator fileNameGenerator;
         private DiskUsage diskUsage;

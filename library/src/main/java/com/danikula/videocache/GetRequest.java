@@ -13,7 +13,7 @@ import static com.danikula.videocache.Preconditions.checkNotNull;
 
 /**
  * Model for Http GET request.
- *
+ * http get请求的模型类
  * @author Alexey Danilov (danikula@gmail.com).
  */
 class GetRequest {
@@ -37,6 +37,7 @@ class GetRequest {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         StringBuilder stringRequest = new StringBuilder();
         String line;
+        //一直读到新空行，也就是读完了http请求包的头部
         while (!TextUtils.isEmpty(line = reader.readLine())) { // until new line (headers ending)
             stringRequest.append(line).append('\n');
         }

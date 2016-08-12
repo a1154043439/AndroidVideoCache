@@ -7,6 +7,7 @@ import com.danikula.videocache.sourcestorage.SourceInfoStorage;
 import java.io.File;
 
 /**
+ * 代理缓存的配置类
  * Configuration for proxy cache.
  *
  * @author Alexey Danilov (danikula@gmail.com).

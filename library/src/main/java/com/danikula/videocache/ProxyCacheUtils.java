@@ -27,12 +27,14 @@ public class ProxyCacheUtils {
     static final int DEFAULT_BUFFER_SIZE = 8 * 1024;
     static final int MAX_ARRAY_PREVIEW = 16;
 
+    //获取支持的MIME类型
     static String getSupposablyMime(String url) {
         MimeTypeMap mimes = MimeTypeMap.getSingleton();
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
         return TextUtils.isEmpty(extension) ? null : mimes.getMimeTypeFromExtension(extension);
     }
 
+    //断言缓冲区，期待不空而且指定偏移量为正数，指定长度大于0小于buffer的长度
     static void assertBuffer(byte[] buffer, long offset, int length) {
         checkNotNull(buffer, "Buffer must be not null!");
         checkArgument(offset >= 0, "Data offset must be positive!");
@@ -49,6 +51,7 @@ public class ProxyCacheUtils {
         return preview;
     }
 
+    //使用UTF-8编码URL
     static String encode(String url) {
         try {
             return URLEncoder.encode(url, "utf-8");
@@ -56,7 +59,7 @@ public class ProxyCacheUtils {
             throw new RuntimeException("Error encoding url", e);
         }
     }
-
+    //使用UTF-8解码URL
     static String decode(String url) {
         try {
             return URLDecoder.decode(url, "utf-8");
@@ -65,6 +68,7 @@ public class ProxyCacheUtils {
         }
     }
 
+    //关闭，所有实现closeable接口的类可以用这种方式关闭，比较优雅
     static void close(Closeable closeable) {
         if (closeable != null) {
             try {
@@ -75,6 +79,11 @@ public class ProxyCacheUtils {
         }
     }
 
+    /**
+     * 计算MD5值，用来加密文件名
+     * @param string
+     * @return
+     */
     public static String computeMD5(String string) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
@@ -84,6 +93,12 @@ public class ProxyCacheUtils {
             throw new IllegalStateException(e);
         }
     }
+
+    /**
+     * byte数组 转为16进制的字符串
+     * @param bytes
+     * @return
+     */
 
     private static String bytesToHexString(byte[] bytes) {
         StringBuffer sb = new StringBuffer();

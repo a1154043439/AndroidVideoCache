@@ -1,6 +1,7 @@
 package com.danikula.videocache;
 
 /**
+ * 在缓存中会出现的异常
  * Indicates any error in work of {@link ProxyCache}.
  *
  * @author Alexey Danilov

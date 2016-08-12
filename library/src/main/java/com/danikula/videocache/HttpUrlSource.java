@@ -23,6 +23,7 @@ import static java.net.HttpURLConnection.HTTP_PARTIAL;
 import static java.net.HttpURLConnection.HTTP_SEE_OTHER;
 
 /**
+ * 将http资源作为源数据，实现源数据的接口
  * {@link Source} that uses http resource as source for {@link ProxyCache}.
  *
  * @author Alexey Danilov (danikula@gmail.com).
@@ -59,6 +60,11 @@ public class HttpUrlSource implements Source {
         return sourceInfo.length;
     }
 
+    /**
+     * 打开http连接，获得输入流，由输入流输入到缓存中
+     * @param offset offset in bytes for source.
+     * @throws ProxyCacheException
+     */
     @Override
     public void open(int offset) throws ProxyCacheException {
         try {
@@ -73,6 +79,15 @@ public class HttpUrlSource implements Source {
         }
     }
 
+    /**
+     * 如果返回的是OK，那么文件大小是contentlength,
+     * 如果赶回的是partial，则是contentlength+offset,是所接收到的文件大小
+     * @param connection
+     * @param offset
+     * @param responseCode
+     * @return
+     * @throws IOException
+     */
     private int readSourceAvailableBytes(HttpURLConnection connection, int offset, int responseCode) throws IOException {
         int contentLength = connection.getContentLength();
         return responseCode == HTTP_OK ? contentLength
@@ -93,12 +108,19 @@ public class HttpUrlSource implements Source {
         }
     }
 
+    /**
+     * 从输入流中读取数据到buffer中
+     * @param buffer a buffer to be used for reading data.
+     * @return
+     * @throws ProxyCacheException
+     */
     @Override
     public int read(byte[] buffer) throws ProxyCacheException {
         if (inputStream == null) {
             throw new ProxyCacheException("Error reading data from " + sourceInfo.url + ": connection is absent!");
         }
         try {
+            //从输入流中读取数据到buffer中
             return inputStream.read(buffer, 0, buffer.length);
         } catch (InterruptedIOException e) {
             throw new InterruptedProxyCacheException("Reading source " + sourceInfo.url + " is interrupted", e);
@@ -107,6 +129,10 @@ public class HttpUrlSource implements Source {
         }
     }
 
+    /**
+     * 获取文件内容信息,可以获得url,文件大小，文件类型等信息
+     * @throws ProxyCacheException
+     */
     private void fetchContentInfo() throws ProxyCacheException {
         Log.d(LOG_TAG, "Read content info from " + sourceInfo.url);
         HttpURLConnection urlConnection = null;
@@ -116,7 +142,9 @@ public class HttpUrlSource implements Source {
             int length = urlConnection.getContentLength();
             String mime = urlConnection.getContentType();
             inputStream = urlConnection.getInputStream();
+            //构造新的源数据类型
             this.sourceInfo = new SourceInfo(sourceInfo.url, length, mime);
+            //将url和对应的sourceInfo存储下来
             this.sourceInfoStorage.put(sourceInfo.url, sourceInfo);
             Log.i(LOG_TAG, "Source info fetched: " + sourceInfo);
         } catch (IOException e) {
@@ -128,6 +156,15 @@ public class HttpUrlSource implements Source {
             }
         }
     }
+
+    /**
+     * 打开连接，考虑重定向的问题，返回最终打开的连接
+     * @param offset
+     * @param timeout
+     * @return
+     * @throws IOException
+     * @throws ProxyCacheException
+     */
 
     private HttpURLConnection openConnection(int offset, int timeout) throws IOException, ProxyCacheException {
         HttpURLConnection connection;

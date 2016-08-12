@@ -14,6 +14,7 @@ import static com.danikula.videocache.ProxyCacheUtils.LOG_TAG;
  * <p/>
  * See https://github.com/nostra13/Android-Universal-Image-Loader
  *
+ * 存储的工具类，取自于android-universal-image-loader，其实就是获得缓存的路径
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
  * @since 1.0.0
  */
@@ -25,7 +26,7 @@ final class StorageUtils {
      * Returns individual application cache directory (for only video caching from Proxy). Cache directory will be
      * created on SD card <i>("/Android/data/[app_package_name]/cache/video-cache")</i> if card is mounted .
      * Else - Android defines cache directory on device's file system.
-     *
+     * 获取缓存目录 ，这里放在/Android/data/[app_package_name]/cache/video-cache目录下，当app卸载时会删除
      * @param context Application context
      * @return Cache {@link File directory}
      */
