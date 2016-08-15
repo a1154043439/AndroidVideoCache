@@ -188,11 +188,13 @@ class ProxyCache {
     }
 
     /**
-     * 检验是否完成
+     * 检验是否完成，这里有读取少一个字节的bug，所以完全相等判断会出问题
      */
     private void tryComplete() throws ProxyCacheException {
         synchronized (stopLock) {
-            if (!isStopped() && cache.available() == source.length()) {
+            Log.d("length",cache.available()+"");
+            Log.d("length",source.length()+"");
+            if (!isStopped() && cache.available()+1 >= source.length() ) {
                 cache.complete();
             }
         }

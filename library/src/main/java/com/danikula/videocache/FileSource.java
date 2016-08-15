@@ -95,8 +95,7 @@ public class FileSource implements Source {
         try {
             File sourceFile = new File(sourceInfo.url);
             float length = sourceFile.length();
-            String mime= URLConnection.guessContentTypeFromName(sourceFile.getName());
-
+            String mime= "flv";
             //构造新的源数据类型
             this.sourceInfo = new SourceInfo(sourceInfo.url, (int)length, mime);
             //将url和对应的sourceInfo存储下来,这里使用了数据库存储
@@ -104,8 +103,6 @@ public class FileSource implements Source {
             Log.i(LOG_TAG, "Source info fetched: " + sourceInfo);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error fetching info from " + sourceInfo.url, e);
-        } finally {
-            ProxyCacheUtils.close(inputStream);
         }
     }
 
