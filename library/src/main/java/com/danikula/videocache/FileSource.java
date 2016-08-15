@@ -39,7 +39,7 @@ public class FileSource implements Source {
         SourceInfo sourceInfo = sourceInfoStorage.get(url);
         this.sourceInfo = sourceInfo != null ? sourceInfo :
                 new SourceInfo(url, Integer.MIN_VALUE, ProxyCacheUtils.getLocalMime(url));
-        Log.d("sourceInfo.mime",this.sourceInfo.mime);
+
     }
 
     public FileSource(FileSource source) {
