@@ -14,14 +14,14 @@ import static com.danikula.videocache.ProxyCacheUtils.LOG_TAG;
  * Method {@link #read(byte[], long, int)} will be blocked while fetching data from source.
  * Useful for streaming something with caching e.g. streaming video/audio etc.
  *
- * 用来支持缓存的代理，可以用来持久化存储数据，read方法会在获取数据的时候阻塞
- * 主要用来缓存音视频流，实现边下边播
+ * 用来支持缓存的代理父类，可以用来持久化存储数据，read方法会在获取数据的时候阻塞
+ * 主要用来缓存音视频流，实现边下边播，这个类实现了代理的功能逻辑
  * @author Alexey Danilov (danikula@gmail.com).
  */
 class ProxyCache {
 
     /**
-     * source和cache这两个变量最重要，指定了数据源和缓存对象
+     * source和cache这两个变量最重要，指定了数据源和缓存
      */
     private static final int MAX_READ_SOURCE_ATTEMPTS = 1;
 

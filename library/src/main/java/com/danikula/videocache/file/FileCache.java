@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
- * 文件缓存，实现了缓存接口
+ * 文件缓存，实现了缓存接口,这里的设计缓存替换原则与缓存实现分开
+ * 并不涉及到如何实现缓存文件删除的逻辑，当内容超过缓存的限制时，由
+ * diskUsage接口实现的方法来打扫缓存空间
  * {@link Cache} that uses file for storing data.
  *
  * @author Alexey Danilov (danikula@gmail.com).
@@ -88,7 +90,8 @@ public class FileCache implements Cache {
         try {
             //datafile关闭
             dataFile.close();
-            //表明从file可以获得缓存
+            //更新diskUsage接口信息，其中实现diskUsage接口的具体类的TotalSizeLruDiskUsage的touch方法是
+            //修改文件的最后更新时间，处理文件空间，也就是当内容数量或者尺寸超过缓存限制的时候，删除文件列表首元素
             diskUsage.touch(file);
         } catch (IOException e) {
             throw new ProxyCacheException("Error closing file " + file, e);

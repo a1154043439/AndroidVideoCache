@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,8 +16,10 @@ import android.widget.SeekBar;
 import android.widget.VideoView;
 
 import com.danikula.videocache.CacheListener;
+import com.danikula.videocache.FileProxyCacheServer;
 import com.danikula.videocache.HttpProxyCacheServer;
 import java.io.File;
+import java.net.URL;
 
 /**
  * Created by netease on 16/8/10.
@@ -40,15 +43,23 @@ public class VideoFragment extends Fragment implements CacheListener {
         return  videoFragment;
     }*/
     private void checkCachedState() {
-        HttpProxyCacheServer proxy = App.getProxy(getActivity());
+        FileProxyCacheServer proxy = App.getProxy(getActivity());
         boolean fullyCached = proxy.isCached(url);
         setCachedState(fullyCached);
     }
 
     private void startVideo() {
-        HttpProxyCacheServer proxy = App.getProxy(getActivity());
+        /*HttpProxyCacheServer proxy = App.getProxy(getActivity());
         proxy.registerCacheListener(this, url);
-        videoView.setVideoPath(proxy.getProxyUrl(url));
+        String proxyUrl = proxy.getProxyUrl(url);
+        Log.d("proxyUrl",proxyUrl);
+        videoView.setVideoPath(proxyUrl);*/
+        FileProxyCacheServer proxy = App.getProxy(getActivity());
+        proxy.registerCacheListener(this, url);
+        String proxyUrl = proxy.getProxyUrl(url);
+        Log.d("proxyUrl",proxyUrl);
+        videoView.setVideoPath(proxyUrl);
+        //videoView.setVideoURI(Uri.parse("http://112.253.22.157/17/z/z/y/u/zzyuasjwufnqerzvyxgkuigrkcatxr/hc.yinyuetai.com/D046015255134077DDB3ACA0D7E68D45.flv"));
         videoView.start();
     }
     @Override
@@ -68,7 +79,7 @@ public class VideoFragment extends Fragment implements CacheListener {
         videoView =(VideoView)root.findViewById(R.id.videoView);
         progressBar = (SeekBar)root.findViewById(R.id.progressBar);
         Video video  = Video.ORANGE_1;
-        url = "https://raw.githubusercontent.com/danikula/AndroidVideoCache/master/files/orange3.mp4";
+        url = "/storage/emulated/0/demo2.flv";
         cachePath = video.getCacheFile(getActivity()).getAbsolutePath();
         Log.d("cachePath",cachePath);
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

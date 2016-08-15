@@ -3,6 +3,7 @@ package com.danikula.videocache;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
+import android.widget.TextView;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -27,13 +28,19 @@ public class ProxyCacheUtils {
     static final int DEFAULT_BUFFER_SIZE = 8 * 1024;
     static final int MAX_ARRAY_PREVIEW = 16;
 
-    //获取支持的MIME类型
+    //从网络url获取支持的MIME类型
     static String getSupposablyMime(String url) {
         MimeTypeMap mimes = MimeTypeMap.getSingleton();
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
         return TextUtils.isEmpty(extension) ? null : mimes.getMimeTypeFromExtension(extension);
     }
 
+    //从本地url获取支持的MIME
+    static String getLocalMime(String url){
+        if(TextUtils.isEmpty(url))
+            return null;
+        return "flv";
+    }
     //断言缓冲区，期待不空而且指定偏移量为正数，指定长度大于0小于buffer的长度
     static void assertBuffer(byte[] buffer, long offset, int length) {
         checkNotNull(buffer, "Buffer must be not null!");

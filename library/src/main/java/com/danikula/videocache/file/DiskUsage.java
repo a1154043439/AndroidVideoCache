@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * 磁盘使用情况接口
  * 声明缓冲会用多少内存,方法表示从哪个文件可以获得缓存的信息
  * Declares how {@link FileCache} will use disc space.
  *

@@ -18,9 +18,10 @@ import java.util.concurrent.Executors;
 abstract class LruDiskUsage implements DiskUsage {
 
     private static final String LOG_TAG = "ProxyCache";
-    //创建线程池
+    //创建线程池，线程池只包含一个线程
     private final ExecutorService workerThread = Executors.newSingleThreadExecutor();
 
+    //最后一次接触（读取或者修改）的时间
     @Override
     public void touch(File file) throws IOException {
         //由新线程执行一个新的任务，用来清理文件缓存

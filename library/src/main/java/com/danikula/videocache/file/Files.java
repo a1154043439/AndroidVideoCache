@@ -29,7 +29,7 @@ class Files {
         }
     }
 
-    //得到排序后的文件列表
+    //得到排序后的文件列表，最近最少未使用的排序列表
     static List<File> getLruListFiles(File directory) {
         List<File> result = new LinkedList<>();
         File[] files = directory.listFiles();
