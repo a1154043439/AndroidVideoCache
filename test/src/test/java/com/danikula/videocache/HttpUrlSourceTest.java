@@ -31,12 +31,14 @@ import static org.fest.assertions.api.Assertions.fail;
 import static org.mockito.Matchers.any;
 
 /**
+ * 学习单元测试
  * @author Alexey Danilov (danikula@gmail.com).
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class HttpUrlSourceTest {
 
+    //测试获取范围的数据，比较看看是否与预期中的数据保持一致，从本地数据中获取相应范围内的数据，比对是否一致
     @Test
     public void testHttpUrlSourceRange() throws Exception {
         int offset = 1000;
@@ -50,6 +52,7 @@ public class HttpUrlSourceTest {
         assertThat(readData).isEqualTo(expectedData);
     }
 
+    //从指定位置打开文件流，检查与本地数据中指定偏移量打开某个文件是否一致
     @Test
     public void testHttpUrlSourceWithOffset() throws Exception {
         int offset = 30000;

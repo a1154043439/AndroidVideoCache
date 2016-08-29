@@ -104,7 +104,7 @@ public class FileCache implements Cache {
             return;
         }
 
-        //完成则修改文件名，将data文件变成只读权限
+        //如果是未完成的文件调用这个方法，首先close完成则修改文件名，将data文件变成只读权限
         close();
 
         String fileName = file.getName().substring(0, file.getName().length() - TEMP_POSTFIX.length());

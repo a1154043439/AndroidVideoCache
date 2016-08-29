@@ -13,9 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
-import java.net.HttpURLConnection;
-import java.net.URLConnection;
-import java.nio.file.Files;
 
 import static com.danikula.videocache.Preconditions.checkNotNull;
 import static com.danikula.videocache.ProxyCacheUtils.DEFAULT_BUFFER_SIZE;
@@ -53,6 +50,8 @@ public class FileSource implements Source {
         try {
             inputStream = new BufferedInputStream(new FileInputStream(sourceInfo.url),DEFAULT_BUFFER_SIZE);
         } catch (FileNotFoundException e) {
+            //如果文件没有找到，说明本地没有此数据源，需要从远端拉取数据源，并且包装成inputstream，与本地存有该视频文件的inputstream保持同样的效果
+
             e.printStackTrace();
         }
     }

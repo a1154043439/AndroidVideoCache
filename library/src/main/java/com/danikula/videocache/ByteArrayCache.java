@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 /**
  * Simple memory based {@link Cache} implementation.
- * 简单的内存缓存实现
+ * 简单的内存缓存实现，主要用作测试
  * @author Alexey Danilov (danikula@gmail.com).
  */
 public class ByteArrayCache implements Cache {

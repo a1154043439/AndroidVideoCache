@@ -10,11 +10,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b01914e4-f6c8-4148-935a-0382e85283b1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/FileSource.java" afterPath="$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/FileSource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/ProxyCache.java" afterPath="$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/ProxyCache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="b01914e4-f6c8-4148-935a-0382e85283b1" name="Default" comment="" />
     <ignored path="sample.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -75,20 +71,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProxyCache.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ProxyCache.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/ProxyCache.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5051546">
-              <caret line="190" column="31" selection-start-line="190" selection-start-column="31" selection-end-line="190" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="182" column="23" selection-start-line="182" selection-start-column="23" selection-end-line="182" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseSourceInfoStorage.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DatabaseSourceInfoStorage.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/sourcestorage/DatabaseSourceInfoStorage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.30927834">
               <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
               <folding />
             </state>
@@ -4883,14 +4879,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/sourcestorage/DatabaseSourceInfoStorage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/SourceInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -4941,8 +4929,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/ProxyCache.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5051546">
-          <caret line="190" column="31" selection-start-line="190" selection-start-column="31" selection-end-line="190" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="182" column="23" selection-start-line="182" selection-start-column="23" selection-end-line="182" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../library/src/main/java/com/danikula/videocache/sourcestorage/DatabaseSourceInfoStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30927834">
+          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
           <folding />
         </state>
       </provider>

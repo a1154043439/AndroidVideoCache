@@ -14,6 +14,7 @@ import static com.danikula.videocache.Preconditions.checkNotNull;
 /**
  * Model for Http GET request.
  * http get请求的模型类
+ * 从输入流中获取请求类再自己包装
  * @author Alexey Danilov (danikula@gmail.com).
  */
 class GetRequest {
@@ -25,6 +26,7 @@ class GetRequest {
     public final long rangeOffset;
     public final boolean partial;
 
+    //包装新的请求
     public GetRequest(String request) {
         checkNotNull(request);
         long offset = findRangeOffset(request);
@@ -37,7 +39,7 @@ class GetRequest {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         StringBuilder stringRequest = new StringBuilder();
         String line;
-        //一直读到新空行，也就是读完了http请求包的头部
+        //一直读到，也就是读完了http请求包
         while (!TextUtils.isEmpty(line = reader.readLine())) { // until new line (headers ending)
             stringRequest.append(line).append('\n');
         }
